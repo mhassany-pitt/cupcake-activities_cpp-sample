@@ -1,0 +1,93 @@
+$schema: https://learning-contents.org/schemas/parsons-puzzles/0.1.0
+license: MIT
+locale: en-US
+id: pp_bank_account
+source: main.cpp
+title: Bank Transaction Logic
+description: Arrange the methods to correctly handle account transactions.
+authors:
+  - first: Jone
+    last: Doe
+    email: jone.doe@example.com
+    affiliation: University of John Doe
+pedagogy:
+  activity: parsons-puzzles
+  difficulty: novice
+  prereq_topics: [classes, methods]
+  topics: [classes, methods, conditional logic]
+runtime:
+  language: cpp
+statement: |
+  Rearrange the blocks to correctly implement the deposit and withdrawal methods for the `BankAccount` class. Make sure to:
+  1. Handle inputs safely
+  2. Validate account balances
+executions:
+  - title: Standard Transaction
+    stdout: |-
+      Deposited 100
+      Withdrew 50
+      Balance: 250
+    console: |-
+      Deposited 100
+      Withdrew 50
+      Balance: 250
+elements:
+  - type: block
+    location:
+      snippet: |2-
+            int deposit(int amount) {
+                if (amount > 0) {
+                    this->balance = this->balance + amount;
+                    std::cout << "Deposited " << amount << std::endl;
+                }
+                return this->balance;
+            }
+    choices:
+      - snippet: |-
+            int deposit(int amount) {
+                if (amount > 0) {
+                    this->balance = this->balance + amount;
+                    std::cout << "Deposited " << amount << std::endl;
+                }
+                return this->balance;
+            }
+        role: solution
+        explanations:
+          - body: |
+              Correctly adds the `amount` to `this->balance` if it is positive (`amount > 0`).
+  - type: block
+    location:
+      snippet: |2-
+            int withdraw(int amount) {
+                if (0 < amount && amount <= this->balance) {
+                    this->balance = this->balance - amount;
+                    std::cout << "Withdrew " << amount << std::endl;
+                } else {
+                    std::cout << "Insufficient funds" << std::endl;
+                }
+                return this->balance;
+            }
+    choices:
+      - snippet: |-
+            int withdraw(int amount) {
+                if (0 < amount && amount <= this->balance) {
+                    this->balance = this->balance - amount;
+                    std::cout << "Withdrew " << amount << std::endl;
+                } else {
+                    std::cout << "Insufficient funds" << std::endl;
+                }
+                return this->balance;
+            }
+        role: solution
+        explanations:
+          - body: |
+              Correctly subtracts the `amount` if funds are sufficient (`amount <= this->balance`).
+      - snippet: |-
+            int withdraw(int amount) {
+                this->balance -= amount;
+                return this->balance;
+            }
+        role: distractor
+        explanations:
+          - body: |
+              This option is incorrect because it lacks the necessary funds check, which could lead to a **negative balance**! Always validate that `amount <= this->balance`.
