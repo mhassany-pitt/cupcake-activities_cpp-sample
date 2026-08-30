@@ -84,28 +84,6 @@ elements:
         explanations:
           - body: |
               Correct! Validates that `amount > 0` before updating `this->balance`, streams confirmation to standard output, and returns the updated balance.
-      - snippet: |-
-          int deposit(int amount) {
-              this->balance = this->balance + amount;
-              std::cout << "Deposited " << amount << std::endl;
-              return this->balance;
-          }
-        role: distractor
-        explanations:
-          - body: |
-              Incorrect. Omits the `if (amount > 0)` input validation guard, allowing negative or zero deposit amounts to erroneously alter the account balance.
-      - snippet: |-
-          int deposit(int amount) {
-              if (amount > 0) {
-                  this->balance = this->balance - amount;
-                  std::cout << "Deposited " << amount << std::endl;
-              }
-              return this->balance;
-          }
-        role: distractor
-        explanations:
-          - body: |
-              Incorrect. Uses subtraction (`-`) instead of addition (`+`), deducting money from the account balance during a deposit transaction.
   - type: block
     group: bank-members
     location:
@@ -144,17 +122,3 @@ elements:
         explanations:
           - body: |
               Incorrect. Unconditionally deducts `amount` without verifying if `amount <= this->balance`, allowing the account balance to plunge into negative numbers.
-      - snippet: |-
-          int withdraw(int amount) {
-              if (0 < amount && amount > this->balance) {
-                  this->balance = this->balance - amount;
-                  std::cout << "Withdrew " << amount << std::endl;
-              } else {
-                  std::cout << "Insufficient funds" << std::endl;
-              }
-              return this->balance;
-          }
-        role: distractor
-        explanations:
-          - body: |
-              Incorrect. The comparison `amount > this->balance` inverts the logic: it only allows withdrawals when the amount exceeds the balance, guaranteeing an overdraft on every successful withdrawal!
