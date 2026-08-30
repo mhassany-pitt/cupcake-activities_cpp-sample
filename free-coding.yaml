@@ -1,26 +1,28 @@
-$schema: https://learning-contents.org/schemas/free-coding/0.1.0
+---
+"$schema": https://learning-contents.org/schemas/free-coding/0.1.0
 source: main.cpp
 license: MIT
 locale: en-US
 id: free_coding_bank_account
 title: Bank Account Management in C++
-description: Instantiate a BankAccount object, execute deposit and withdrawal member calls, and inspect the resulting balance.
+description: Instantiate a BankAccount object, execute deposit and withdrawal member
+  calls, and inspect the resulting balance.
 authors:
-  - first: Jone
-    last: Doe
-    email: jone.doe@example.com
-    affiliation: University of John Doe
+- first: Jone
+  last: Doe
+  email: jone.doe@example.com
+  affiliation: University of John Doe
 pedagogy:
   activity: free-coding
   difficulty: novice
   prereq_topics:
-    - basic-syntax
-    - classes
+  - basic-syntax
+  - classes
   topics:
-    - classes
-    - constructors
-    - methods
-    - state
+  - classes
+  - constructors
+  - methods
+  - state
 runtime:
   language: cpp
 statement: |
@@ -30,74 +32,74 @@ statement: |
   3. Call `withdraw` with an amount of `50`.
   4. Stream the final balance to `std::cout` in the format: `Balance: <balance>\n`.
 executions:
-  - title: Standard Transaction Sequence
-    stdin: []
-    stdout: |-
-      Deposited 100
-      Withdrew 50
-      Balance: 250
-    console: |-
-      Deposited 100
-      Withdrew 50
-      Balance: 250
-    status: pass
+- title: Standard Transaction Sequence
+  stdin: []
+  stdout: |-
+    Deposited 100
+    Withdrew 50
+    Balance: 250
+  console: |-
+    Deposited 100
+    Withdrew 50
+    Balance: 250
+  status: pass
 elements:
-  - type: locked
-    location:
-      snippet: |-
-        #include <iostream>
-        #include <string>
+- type: locked
+  location:
+    snippet: |-
+      #include <iostream>
+      #include <string>
 
-        class BankAccount {
-        public:
-            std::string owner;
-            int balance;
+      class BankAccount {
+      public:
+          std::string owner;
+          int balance;
 
-            BankAccount(std::string owner, int balance) : owner(owner), balance(balance) {}
+          BankAccount(std::string owner, int balance) : owner(owner), balance(balance) {}
 
-            int deposit(int amount) {
-                if (amount > 0) {
-                    this->balance = this->balance + amount;
-                    std::cout << "Deposited " << amount << std::endl;
-                }
-                return this->balance;
-            }
+          int deposit(int amount) {
+              if (amount > 0) {
+                  this->balance = this->balance + amount;
+                  std::cout << "Deposited " << amount << std::endl;
+              }
+              return this->balance;
+          }
 
-            int withdraw(int amount) {
-                if (0 < amount && amount <= this->balance) {
-                    this->balance = this->balance - amount;
-                    std::cout << "Withdrew " << amount << std::endl;
-                } else {
-                    std::cout << "Insufficient funds" << std::endl;
-                }
-                return this->balance;
-            }
-        };
-  - type: editable
-    location:
-      snippet: |-
-            BankAccount account("Bob", 200);
-            account.deposit(100);
-            account.withdraw(50);
-            std::cout << "Balance: " << account.balance << std::endl;
-    placeholder: |-
-      // 1. Create BankAccount account for "Bob" with 200 initial balance
+          int withdraw(int amount) {
+              if (0 < amount && amount <= this->balance) {
+                  this->balance = this->balance - amount;
+                  std::cout << "Withdrew " << amount << std::endl;
+              } else {
+                  std::cout << "Insufficient funds" << std::endl;
+              }
+              return this->balance;
+          }
+      };
+- type: editable
+  location:
+    snippet: |2-
+          BankAccount account("Bob", 200);
+          account.deposit(100);
+          account.withdraw(50);
+          std::cout << "Balance: " << account.balance << std::endl;
+  placeholder: |-
+    // 1. Create BankAccount account for "Bob" with 200 initial balance
 
-          // 2. Deposit 100
+        // 2. Deposit 100
 
-          // 3. Withdraw 50
+        // 3. Withdraw 50
 
-          // 4. Output "Balance: " << account.balance << std::endl;
+        // 4. Output "Balance: " << account.balance << std::endl;
 testcases:
-  - title: Standard Account Workflow
-    visible: true
-    stdin: []
-    stdout: |-
-      Deposited 100
-      Withdrew 50
-      Balance: 250
-    console: |-
-      Deposited 100
-      Withdrew 50
-      Balance: 250
-    status: pass
+- title: Standard Account Workflow
+  visible: true
+  stdin: []
+  stdout: |-
+    Deposited 100
+    Withdrew 50
+    Balance: 250
+  console: |-
+    Deposited 100
+    Withdrew 50
+    Balance: 250
+  status: pass
