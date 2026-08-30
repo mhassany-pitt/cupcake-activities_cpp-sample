@@ -64,7 +64,6 @@ elements:
     group: bank-members
     location:
       snippet: |2-
-
             int deposit(int amount) {
                 if (amount > 0) {
                     this->balance = this->balance + amount;
@@ -74,7 +73,6 @@ elements:
             }
     choices:
       - snippet: |2-
-
               int deposit(int amount) {
                   if (amount > 0) {
                       this->balance = this->balance + amount;
@@ -112,7 +110,6 @@ elements:
     group: bank-members
     location:
       snippet: |2-
-
             int withdraw(int amount) {
                 if (0 < amount && amount <= this->balance) {
                     this->balance = this->balance - amount;
@@ -124,7 +121,6 @@ elements:
             }
     choices:
       - snippet: |2-
-
               int withdraw(int amount) {
                   if (0 < amount && amount <= this->balance) {
                       this->balance = this->balance - amount;
