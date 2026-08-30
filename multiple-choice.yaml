@@ -2,8 +2,8 @@ $schema: https://learning-contents.org/schemas/multiple-choice-question/0.1.0
 license: MIT
 locale: en-US
 id: mcq_bank_account_deposit
-title: C++ Class Deposit Method
-description: Choose the correct implementation of the deposit method in C++.
+title: C++ Class Deposit Method Implementation
+description: Choose the correct implementation of the deposit member method in a C++ BankAccount class.
 authors:
   - first: Jone
     last: Doe
@@ -13,13 +13,17 @@ pedagogy:
   activity: multiple-choice-question
   difficulty: intermediate
   prereq_topics:
+    - basic-syntax
     - classes
+    - types
   topics:
     - classes
     - methods
-include_choices: 3
+    - variable-scope
+    - state
+include_choices: 4
 question: |
-  Given the following C++ class definition for `BankAccount`:
+  Given the following C++ class definition:
   
   ```cpp
   class BankAccount {
@@ -31,7 +35,7 @@ question: |
   };
   ```
   
-  Which of the following represents the correct implementation for a `deposit` member method in C++ that adds a positive `amount` to the account balance and returns the new balance?
+  Which of the following represents the correct implementation for a `deposit` member function in C++ that validates positive deposit amounts, modifies the instance balance, and returns the new balance?
 choices:
   - body: |
       ```cpp
@@ -48,33 +52,50 @@ choices:
     order: 1
     explanations:
       - body: |
-          This is the correct implementation. It verifies that the deposit `amount` is positive (`amount > 0`), updates the member variable `this->balance` using the `+=` operator, and returns the updated balance. It also correctly throws a `std::invalid_argument` for invalid amounts.
+          Correct! This implementation:
+          1. Validates that `amount > 0`.
+          2. Updates member state using `this->balance += amount`.
+          3. Returns the updated `int` balance.
+          4. Correctly throws a `std::invalid_argument` exception for non-positive inputs.
   - body: |
       ```cpp
       int deposit(int amount) {
           if (amount > 0) {
-              int balance = balance + amount;
+              int balance = this->balance + amount;
               return balance;
           }
-          return balance;
-      }
-      ```
-    role: distractor
-    explanations:
-      - body: |
-          Incorrect. Declaring `int balance = ...` inside the method creates a shadowed local variable instead of updating the instance variable `this->balance`.
-  - body: |
-      ```cpp
-      int deposit(int amount) {
-          this->balance =+ amount;
           return this->balance;
       }
       ```
     role: distractor
     explanations:
       - body: |
-          Incorrect. The operator `=+` assigns positive `amount` (`this->balance = +amount`), which overwrites the balance rather than adding to it. The correct operator is `+=`.
-  - body: None
+          Incorrect. Declaring `int balance = ...` creates a shadowed local variable inside the method scope, leaving the instance member `this->balance` unmodified.
+  - body: |
+      ```cpp
+      int deposit(int amount) {
+          if (amount > 0) {
+              this->balance =+ amount;
+              return this->balance;
+          }
+          return this->balance;
+      }
+      ```
     role: distractor
-    include: always
-    order: 2
+    explanations:
+      - body: |
+          Incorrect. The operator `=+` is a unary positive assignment (`this->balance = +amount`), which overwrites the balance with `amount` rather than accumulating funds with `+=`.
+  - body: |
+      ```cpp
+      int deposit(int amount) {
+          if (amount > 0) {
+              this.balance += amount;
+              return this.balance;
+          }
+          return this.balance;
+      }
+      ```
+    role: distractor
+    explanations:
+      - body: |
+          Incorrect. In C++, `this` is a pointer to the current instance object (`BankAccount*`), not a direct reference. Accessing members via `this.balance` causes a C++ compilation error: `member reference type 'BankAccount *' is a pointer; did you mean to use '->'?`.

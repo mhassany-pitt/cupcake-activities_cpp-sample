@@ -3,8 +3,8 @@ source: main.cpp
 license: MIT
 locale: en-US
 id: we_bank_account
-title: Bank Account Management
-description: Learn how to use classes and methods to manage a bank account in C++.
+title: Bank Account Management in C++
+description: Learn how to use C++ classes, member initializer lists, methods, and stream I/O to manage object state.
 authors:
   - first: Jone
     last: Doe
@@ -13,17 +13,24 @@ authors:
 pedagogy:
   activity: worked-example
   difficulty: novice
-  prereq_topics: []
+  prereq_topics:
+    - basic-syntax
+    - variables
   topics:
     - classes
+    - constructors
+    - methods
     - state
+    - conditional-logic
 runtime:
   language: cpp
 statement: |
-  This worked example demonstrates how `BankAccount` state is managed in C++ using classes and member methods. We'll examine:
-  1. Class constructor (`BankAccount`)
-  2. Deposit method (`deposit`)
-  3. Withdrawal method (`withdraw`)
+  This worked example demonstrates how `BankAccount` state and operations are modeled in C++ using object-oriented classes and member methods. We'll examine:
+  1. The `BankAccount` class declaration and `public:` member fields (`owner` and `balance`).
+  2. The constructor using modern C++ member initializer list syntax.
+  3. The `deposit` method with positive input validation and state mutation.
+  4. The `withdraw` method with compound guard logic protecting against overdrafts.
+  5. The `main` driver function demonstrating direct object instantiation, method calls, and `std::cout` stream output.
 executions:
   - title: Bob's Account
     stdin: []
@@ -39,19 +46,80 @@ executions:
 elements:
   - type: explanation
     location:
-      snippet: "BankAccount(std::string owner, int balance) : owner(owner), balance(balance) {}"
+      snippet: |-
+        class BankAccount {
+        public:
+            std::string owner;
+            int balance;
     explanations:
       - body: |
-          The constructor initializes member fields in C++ using member initialization list syntax:
-          ```cpp
-          BankAccount(std::string owner, int balance) : owner(owner), balance(balance) {}
-          ```
-          This directly initializes `owner` and `balance` when the object is instantiated.
-      - body: |
-          ...
+          ### 1. Class Declaration and Member Fields
+          * `class BankAccount`: In C++, a `class` encapsulates data members and member functions. Unlike structs where members default to `public`, class members default to `private`.
+          * `public:`: Access specifier making subsequent members accessible from outside the class.
+          * `std::string owner;`: High-level dynamic string type from the C++ standard library.
+          * `int balance;`: Standard primitive integer field holding the balance.
   - type: explanation
     location:
-      snippet: "if (0 < amount && amount <= this->balance) {"
+      snippet: |-
+            BankAccount(std::string owner, int balance) : owner(owner), balance(balance) {}
     explanations:
       - body: |
-          This condition validates that the withdrawal transaction is correct: it checks if the `amount` is greater than `0` and is less than or equal to the current `this->balance`.
+          ### 2. Constructor and Member Initializer List
+          * `BankAccount(std::string owner, int balance)`: The constructor takes initial values for `owner` and `balance`.
+          * `: owner(owner), balance(balance)`: The **member initializer list** initializes the class fields directly before the constructor body executes. In C++, this is more efficient and idiomatic than default-constructing and subsequently assigning inside the body `{}`.
+  - type: explanation
+    location:
+      snippet: |-
+            int deposit(int amount) {
+                if (amount > 0) {
+                    this->balance = this->balance + amount;
+                    std::cout << "Deposited " << amount << std::endl;
+                }
+                return this->balance;
+            }
+    explanations:
+      - body: |
+          ### 3. The `deposit` Method
+          * **Input Validation**: `if (amount > 0)` guards against zero or negative deposit amounts.
+          * **State Mutation**: `this->balance = this->balance + amount;` credits the balance. In C++, `this` is a pointer to the current instance, so member access uses `->`.
+          * **Stream Output**: `std::cout << "Deposited " << amount << std::endl;` writes output to standard output using the insertion operator (`<<`).
+          * **Return Value**: `return this->balance;` returns the updated balance.
+  - type: explanation
+    location:
+      snippet: |-
+            int withdraw(int amount) {
+                if (0 < amount && amount <= this->balance) {
+                    this->balance = this->balance - amount;
+                    std::cout << "Withdrew " << amount << std::endl;
+                } else {
+                    std::cout << "Insufficient funds" << std::endl;
+                }
+                return this->balance;
+            }
+    explanations:
+      - body: |
+          ### 4. The `withdraw` Method and Overdraft Protection
+          * **Compound Guard Condition**: `if (0 < amount && amount <= this->balance)` checks two conditions with `&&`:
+            1. `0 < amount`: The withdrawal amount must be strictly positive.
+            2. `amount <= this->balance`: The withdrawal must not exceed current funds (allowing full withdrawals down to 0).
+          * **Successful Debit**: When valid, `this->balance = this->balance - amount;` debits the balance and prints confirmation.
+          * **Fallback Branch**: The `else` block catches overdraft attempts or invalid amounts by printing `"Insufficient funds"` without modifying `this->balance`.
+          * **Return Value**: Returns the current balance in all cases.
+  - type: explanation
+    location:
+      snippet: |-
+        int main() {
+            BankAccount account("Bob", 200);
+            account.deposit(100);
+            account.withdraw(50);
+            std::cout << "Balance: " << account.balance << std::endl;
+            return 0;
+        }
+    explanations:
+      - body: |
+          ### 5. Execution Flow in `main`
+          * `BankAccount account("Bob", 200);`: Direct stack-based initialization of a `BankAccount` object for `"Bob"` with an initial balance of `200`.
+          * `account.deposit(100);`: Invokes `deposit`, increasing balance to 300 and printing `"Deposited 100"`.
+          * `account.withdraw(50);`: Invokes `withdraw`, decreasing balance to 250 and printing `"Withdrew 50"`.
+          * `std::cout << "Balance: " << account.balance << std::endl;`: Streams `"Balance: 250"` to console output.
+          * `return 0;`: Returns success status to the operating system.

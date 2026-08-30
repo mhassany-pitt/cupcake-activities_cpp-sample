@@ -3,8 +3,8 @@ license: MIT
 locale: en-US
 id: pp_bank_account
 source: main.cpp
-title: Bank Transaction Logic
-description: Arrange the methods to correctly handle account transactions.
+title: Bank Account Methods and Constructor in C++
+description: Rearrange the C++ member functions and constructor to properly manage BankAccount instance state and enforce transaction safety.
 authors:
   - first: Jone
     last: Doe
@@ -13,14 +13,22 @@ authors:
 pedagogy:
   activity: parsons-puzzles
   difficulty: novice
-  prereq_topics: [classes, methods]
-  topics: [classes, methods, conditional logic]
+  prereq_topics:
+    - basic-syntax
+    - classes
+  topics:
+    - classes
+    - constructors
+    - methods
+    - conditional-logic
 runtime:
   language: cpp
 statement: |
-  Rearrange the blocks to correctly implement the deposit and withdrawal methods for the `BankAccount` class. Make sure to:
-  1. Handle inputs safely
-  2. Validate account balances
+  Rearrange the blocks to correctly implement the constructor and member methods for the `BankAccount` class in C++.
+  Make sure to:
+  1. Initialize the member variables (`owner` and `balance`) using a member initializer list.
+  2. Implement the `deposit` method with positive input validation.
+  3. Implement the `withdraw` method with strict overdraft protection and insufficient funds notification.
 executions:
   - title: Standard Transaction
     stdout: |-
@@ -31,63 +39,124 @@ executions:
       Deposited 100
       Withdrew 50
       Balance: 250
+    status: pass
 elements:
   - type: block
+    group: bank-members
     location:
-      snippet: |2-
-            int deposit(int amount) {
-                if (amount > 0) {
-                    this->balance = this->balance + amount;
-                    std::cout << "Deposited " << amount << std::endl;
-                }
-                return this->balance;
-            }
+      snippet: |-
+            BankAccount(std::string owner, int balance) : owner(owner), balance(balance) {}
     choices:
       - snippet: |-
-            int deposit(int amount) {
-                if (amount > 0) {
-                    this->balance = this->balance + amount;
-                    std::cout << "Deposited " << amount << std::endl;
-                }
-                return this->balance;
-            }
+            BankAccount(std::string owner, int balance) : owner(owner), balance(balance) {}
         role: solution
         explanations:
           - body: |
-              Correctly adds the `amount` to `this->balance` if it is positive (`amount > 0`).
+              Correct! Uses C++ member initializer list syntax `: owner(owner), balance(balance)` to directly initialize the member variables with the constructor parameters.
+      - snippet: |-
+            BankAccount(std::string owner, int balance) {
+                owner = owner;
+                balance = balance;
+            }
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. Without `this->`, `owner = owner` assigns parameters back to themselves (parameter shadowing), leaving the class members default-initialized or uninitialized.
   - type: block
+    group: bank-members
     location:
-      snippet: |2-
-            int withdraw(int amount) {
-                if (0 < amount && amount <= this->balance) {
-                    this->balance = this->balance - amount;
-                    std::cout << "Withdrew " << amount << std::endl;
-                } else {
-                    std::cout << "Insufficient funds" << std::endl;
+      snippet: |-
+            int deposit(int amount) {
+                if (amount > 0) {
+                    this->balance = this->balance + amount;
+                    std::cout << "Deposited " << amount << std::endl;
                 }
                 return this->balance;
             }
     choices:
       - snippet: |-
-            int withdraw(int amount) {
-                if (0 < amount && amount <= this->balance) {
-                    this->balance = this->balance - amount;
-                    std::cout << "Withdrew " << amount << std::endl;
-                } else {
-                    std::cout << "Insufficient funds" << std::endl;
+            int deposit(int amount) {
+                if (amount > 0) {
+                    this->balance = this->balance + amount;
+                    std::cout << "Deposited " << amount << std::endl;
                 }
                 return this->balance;
             }
         role: solution
         explanations:
           - body: |
-              Correctly subtracts the `amount` if funds are sufficient (`amount <= this->balance`).
+              Correct! Validates that `amount > 0` before updating `this->balance`, streams confirmation to standard output, and returns the updated balance.
       - snippet: |-
-            int withdraw(int amount) {
-                this->balance -= amount;
+            int deposit(int amount) {
+                this->balance = this->balance + amount;
+                std::cout << "Deposited " << amount << std::endl;
                 return this->balance;
             }
         role: distractor
         explanations:
           - body: |
-              This option is incorrect because it lacks the necessary funds check, which could lead to a **negative balance**! Always validate that `amount <= this->balance`.
+              Incorrect. Omits the `if (amount > 0)` input validation guard, allowing negative or zero deposit amounts to erroneously alter the account balance.
+      - snippet: |-
+            int deposit(int amount) {
+                if (amount > 0) {
+                    this->balance = this->balance - amount;
+                    std::cout << "Deposited " << amount << std::endl;
+                }
+                return this->balance;
+            }
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. Uses subtraction (`-`) instead of addition (`+`), deducting money from the account balance during a deposit transaction.
+  - type: block
+    group: bank-members
+    location:
+      snippet: |-
+            int withdraw(int amount) {
+                if (0 < amount && amount <= this->balance) {
+                    this->balance = this->balance - amount;
+                    std::cout << "Withdrew " << amount << std::endl;
+                } else {
+                    std::cout << "Insufficient funds" << std::endl;
+                }
+                return this->balance;
+            }
+    choices:
+      - snippet: |-
+            int withdraw(int amount) {
+                if (0 < amount && amount <= this->balance) {
+                    this->balance = this->balance - amount;
+                    std::cout << "Withdrew " << amount << std::endl;
+                } else {
+                    std::cout << "Insufficient funds" << std::endl;
+                }
+                return this->balance;
+            }
+        role: solution
+        explanations:
+          - body: |
+              Correct! Verifies that `0 < amount && amount <= this->balance`, debits the account when funds are sufficient, prints an error message when funds are insufficient, and returns `this->balance`.
+      - snippet: |-
+            int withdraw(int amount) {
+                this->balance = this->balance - amount;
+                std::cout << "Withdrew " << amount << std::endl;
+                return this->balance;
+            }
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. Unconditionally deducts `amount` without verifying if `amount <= this->balance`, allowing the account balance to plunge into negative numbers.
+      - snippet: |-
+            int withdraw(int amount) {
+                if (0 < amount && amount > this->balance) {
+                    this->balance = this->balance - amount;
+                    std::cout << "Withdrew " << amount << std::endl;
+                } else {
+                    std::cout << "Insufficient funds" << std::endl;
+                }
+                return this->balance;
+            }
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. The comparison `amount > this->balance` inverts the logic: it only allows withdrawals when the amount exceeds the balance, guaranteeing an overdraft on every successful withdrawal!

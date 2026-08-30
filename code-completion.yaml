@@ -3,8 +3,8 @@ source: main.cpp
 license: MIT
 locale: en-US
 id: cc_bank_account
-title: Complete the BankAccount Logic
-description: Fill in the critical logic for account balance updates and validation.
+title: Complete the BankAccount C++ Implementation
+description: Fill in essential C++ keywords, operators, and method calls to declare classes, update state, and validate transactions.
 authors:
   - first: Jone
     last: Doe
@@ -13,16 +13,24 @@ authors:
 pedagogy:
   activity: code-completion
   difficulty: novice
-  prereq_topics: []
+  prereq_topics:
+    - basic-syntax
+    - variables
   topics:
     - classes
+    - constructors
     - arithmetic
+    - relational-operators
+    - methods
 runtime:
   language: cpp
 statement: |
-  Complete the `BankAccount` class by adding the missing updates and validation checks. Focus on:
-  - Updating `this->balance` during a deposit transaction
-  - Ensuring withdrawal amounts do not exceed the current balance
+  Complete the `BankAccount` class and method implementations in C++ by selecting the correct keywords, operators, and method identifiers.
+  Make sure to:
+  1. Declare the object blueprint using the C++ `class` keyword.
+  2. Correctly increment `this->balance` during a deposit.
+  3. Ensure that withdrawal requests do not exceed the available balance.
+  4. Invoke the proper transaction method in the `main` driver function.
 executions:
   - title: Bob's Account
     stdin: []
@@ -39,6 +47,32 @@ executions:
 elements:
   - type: blank
     location:
+      context: "class BankAccount {"
+      snippet: "class"
+      nth: 1
+    choices:
+      - snippet: "class"
+        role: solution
+        explanations:
+          - body: |
+              Correct! In C++, the `class` keyword is used to declare an encapsulated type whose members default to private access.
+      - snippet: "struct"
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. While `struct` is valid in C++, it defaults member visibility to `public` rather than `private` and is not the keyword used in this class definition.
+      - snippet: "interface"
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. `interface` is not a standard keyword in C++; abstract classes or concepts are used instead.
+      - snippet: "namespace"
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. `namespace` provides logical scope partitioning for identifiers, but cannot be instantiated as an object.
+  - type: blank
+    location:
       context: "this->balance = this->balance + amount;"
       snippet: "+"
       nth: 1
@@ -47,12 +81,22 @@ elements:
         role: solution
         explanations:
           - body: |
-              Use the `+` operator to **increase** the current balance by the deposit amount.
+              Correct! The addition operator (`+`) adds the deposited `amount` to the current `this->balance`, crediting the account.
       - snippet: "-"
         role: distractor
         explanations:
           - body: |
-              This would use the `-` operator, which **decreases** the balance instead of adding to it.
+              Incorrect. The subtraction operator (`-`) would deduct money from the account during a deposit instead of crediting it.
+      - snippet: "*"
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. The multiplication operator (`*`) would multiply the existing balance by the deposit amount, yielding an incorrect total.
+      - snippet: "="
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. Using `=` overwrites the balance with `amount` rather than accumulating funds.
   - type: blank
     location:
       context: "if (0 < amount && amount <= this->balance) {"
@@ -63,9 +107,40 @@ elements:
         role: solution
         explanations:
           - body: |
-              You must check if the withdrawal amount is less than or equal (`<=`) to the current balance, ensuring the user has **sufficient funds**.
+              Correct! The less-than-or-equal operator (`<=`) ensures the user has sufficient funds, allowing withdrawals up to and including the exact total balance without overdrafting.
+      - snippet: "<"
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. The strictly-less-than operator (`<`) would prevent account holders from withdrawing their exact entire balance (withdrawing down to zero).
+      - snippet: ">="
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. Using `>=` would invert the business logic, permitting withdrawals only when the amount is greater than or equal to the balance, guaranteeing an overdraft.
       - snippet: ">"
         role: distractor
         explanations:
           - body: |
-              This would use the `>` operator, which checks if the withdrawal amount is strictly greater than the balance, allowing the user to withdraw more money than they have!
+              Incorrect. Using `>` would only permit transactions that exceed the current balance, causing an immediate overdraft into negative funds.
+  - type: blank
+    location:
+      context: "account.deposit(100);"
+      snippet: "deposit"
+      nth: 1
+    choices:
+      - snippet: "deposit"
+        role: solution
+        explanations:
+          - body: |
+              Correct! Invokes the `deposit` method with an argument of `100` to credit the account.
+      - snippet: "withdraw"
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. Invoking `withdraw(100)` would debit the account instead of performing the required deposit transaction.
+      - snippet: "balance"
+        role: distractor
+        explanations:
+          - body: |
+              Incorrect. `balance` is an `int` data member, not a member function; calling `account.balance(100)` causes a C++ compilation error.
