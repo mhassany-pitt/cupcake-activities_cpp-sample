@@ -23,14 +23,17 @@ pedagogy:
     - conditional-logic
 runtime:
   language: cpp
+  version: 17
 statement: |
   Rearrange the blocks to correctly implement the constructor and member methods for the `BankAccount` class in C++.
   Make sure to:
   1. Initialize the member variables (`owner` and `balance`) using a member initializer list.
   2. Implement the `deposit` method with positive input validation.
   3. Implement the `withdraw` method with strict overdraft protection and insufficient funds notification.
-executions:
+testcases:
   - title: Standard Transaction
+    visible: true
+    stdin: []
     stdout: |-
       Deposited 100
       Withdrew 50
@@ -40,6 +43,16 @@ executions:
       Withdrew 50
       Balance: 250
     status: pass
+    hints:
+      - "Arrange the code blocks in logical sequential order from initialization to final output."
+      - "Ensure correct block indentation where applicable."
+    feedback:
+      - on_pass:
+          - explanations:
+              - "Correct! All blocks are sequenced properly to produce the expected output."
+        on_fail:
+          - explanations:
+              - "The block ordering or indentation is incorrect. Re-examine the flow of execution."
 elements:
   - type: block
     group: bank-members
@@ -48,6 +61,7 @@ elements:
     choices:
       - snippet: 'BankAccount(std::string owner, int balance) : owner(owner), balance(balance) {}'
         role: solution
+        indent: 0
         explanations:
           - body: |
               Correct! Uses C++ member initializer list syntax `: owner(owner), balance(balance)` to directly initialize the member variables with the constructor parameters.
@@ -81,6 +95,7 @@ elements:
                   return this->balance;
               }
         role: solution
+        indent: 0
         explanations:
           - body: |
               Correct! Validates that `amount > 0` before updating `this->balance`, streams confirmation to standard output, and returns the updated balance.
@@ -109,6 +124,7 @@ elements:
                   return this->balance;
               }
         role: solution
+        indent: 0
         explanations:
           - body: |
               Correct! Verifies that `0 < amount && amount <= this->balance`, debits the account when funds are sufficient, prints an error message when funds are insufficient, and returns `this->balance`.

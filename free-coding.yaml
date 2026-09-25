@@ -23,24 +23,13 @@ pedagogy:
     - state
 runtime:
   language: cpp
+  version: 17
 statement: |
   In the `main` function, write the C++ code to interact with the `BankAccount` class:
   1. Instantiate a `BankAccount` object named `account` for owner `"Bob"` with an initial balance of `200`.
   2. Call `deposit` with an amount of `100`.
   3. Call `withdraw` with an amount of `50`.
   4. Stream the final balance to `std::cout` in the format: `Balance: <balance>\n`.
-executions:
-  - title: Standard Transaction Sequence
-    stdin: []
-    stdout: |-
-      Deposited 100
-      Withdrew 50
-      Balance: 250
-    console: |-
-      Deposited 100
-      Withdrew 50
-      Balance: 250
-    status: pass
 elements:
   - type: locked
     location:
@@ -98,3 +87,13 @@ testcases:
       Withdrew 50
       Balance: 250
     status: pass
+    hints:
+      - "Review the problem statement and ensure the steps are executed in order."
+      - "Verify that initial values, deposits, withdrawals, and prints match the specification."
+    feedback:
+      - on_pass:
+          - explanations:
+              - "Great job! Your solution executed properly and matched all expected outputs."
+        on_fail:
+          - explanations:
+              - "Your code produced differing output. Double-check your method calls and printed formatting."
